@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Proyek</title>
+    <style>
+    body {
+            font-family: Arial, sans-serif;
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+            position: relative;
+            /* overflow: hidden; Remove this line */
+            /* Mengatur gradien sebagai latar belakang */
+            background: linear-gradient(to bottom, #00420d, #00ff00, #0000ff);
+            /* Menggunakan animasi untuk membuat gradien bergerak */
+            animation: gradientAnimation 10s ease infinite;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        form {
+            background-color: rgba(242, 242, 242, 0.5); /* Ubah nilai alpha menjadi 0.5 */
+            padding: 20px;
+            border-radius: 10px;
+            margin: 0 auto;
+            width: 350px;
+            max-width: 90%;
+        }
+
+        input[type=text], input[type=date], select, textarea, input[type=submit] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #searchInput {
+            width: 150px;
+            padding: 5px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #fff;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #573b8a;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .error {
+            border-color: red;
+        }
+
+        /* Animasi border "light" */
+        .lightBorder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: lightBorderAnimation 2s ease-in-out infinite;
+        }
+
+        @keyframes lightBorderAnimation {
+            0% {
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+            50% {
+                border-color: rgba(255, 255, 255, 0.5);
+            }
+            100% {
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-color: #00420d; /* Warna awal */
+            }
+            50% {
+                background-color: #00ff00; /* Warna pertengahan */
+            }
+            100% {
+                background-color: #0000ff; /* Warna akhir */
+            }
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Style untuk tombol "Tambah Proyek" */
+        input[type=submit]#submitProjectButton {
+            background-color: #007bff; /* Warna biru */
+            color: #fff; /* Warna teks putih */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Transisi saat dihover */
+        }
+
+        /* Style untuk tombol "Tambah Proyek" saat dihover */
+        input[type=submit]#submitProjectButton:hover {
+            background-color: #0056b3; /* Warna biru yang lebih gelap saat dihover */
+        }
+
+        /* Style untuk tombol "Tampilkan Data Proyek" */
+        #showProjectButton, #hideProjectButton {
+            background-color: #ffc107; /* Warna kuning */
+            color: #000; /* Warna teks hitam */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        /* Style untuk tombol "Tampilkan Data Proyek" dan "Sembunyikan Data Proyek" saat dihover */
+        #showProjectButton:hover, #hideProjectButton:hover {
+            background-color: #ffad00; /* Warna kuning yang lebih gelap saat dihover */
+        }
+    </style>
+</head>
+<body>
+    <h2>Manajemen Proyek</h2>
+    <form id="projectForm">
+        <label for="nama">Nama Proyek:</label><br>
+        <input type="text" id="nama" name="nama"><br><br>
+
+        <label for="tujuan">Tujuan:</label><br>
+        <textarea id="tujuan" name="tujuan" rows="4" cols="50"></textarea><br><br>
+
+        <label for="tanggalMulai">Tanggal Mulai:</label><br>
+        <input type="date" id="tanggalMulai" name="tanggalMulai"><br><br>
+
+        <label for="tanggalSelesai">Tanggal Selesai:</label><br>
+        <input type="date" id="tanggalSelesai" name="tanggalSelesai"><br><br>
+
+        <label for="pic">PIC (Person In Charge):</label><br>
+        <input type="text" id="pic" name="pic"><br><br>
+
+        <label for="status">Status Penyelesaian:</label><br>
+        <select id="status" name="status">
+            <option value="">Pilih Status</option>
+            <option value="selesai">Selesai</option>
+            <option value="berlangsung">Berlangsung</option>
+            <option value="gagal">Gagal</option>
+        </select><br><br>
+
+        <label for="catatan">Catatan Akhir Kegiatan:</label><br>
+        <textarea id="catatan" name="catatan" rows="4" cols="50"></textarea><br><br>
+        
+        <!-- Tombol "Tambah Proyek" -->
+        <input type="submit" id="submitProjectButton" value="Tambah Proyek">
+
+    </form>
+
+    <br>
+
+    <!-- Tombol "Tampilkan Data Proyek" -->
+    <button id="showProjectButton" onclick="showProjectData()">Tampilkan Data Proyek</button>
+    <!-- Tombol "Sembunyikan Data Proyek" -->
+    <button id="hideProjectButton" onclick="hideProjectData()" style="display: none;">Sembunyikan Data Proyek</button>
+
+    <!-- Container untuk tabel proyek -->
+    <div id="projectTableContainer" style="display: none;">
+        <h2>Daftar Proyek</h2>
+        <input type="text" id="searchInput" placeholder="Cari nama proyek, PIC, atau status...">
+        <button onclick="searchProjects()">Cari</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama Proyek</th>
+                    <th>Tujuan</th>
+                    <th>Tanggal Mulai</th>
+                    <th>Tanggal Selesai</th>
+                    <th>PIC</th>
+                    <th>Status Penyelesaian</th>
+                    <th>Catatan Akhir Kegiatan</th>
+                    <th>Waktu Perekaman</th>
+                    <th>Waktu Update Terakhir</th>
+                </tr>
+            </thead>
+            <tbody id="projectTableBody">
+                <!-- Data proyek akan ditampilkan di sini -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        // Function to save projects data to localStorage
+        function saveProjectsToLocalStorage() {
+            localStorage.setItem('projectsData', JSON.stringify(projectsData));
+        }
+
+        // Function to load projects data from localStorage
+        function loadProjectsFromLocalStorage() {
+            var data = localStorage.getItem('projectsData');
+            return data ? JSON.parse(data) : [];
+        }
+
+        // Initialize projectsData array with data from localStorage
+        var projectsData = loadProjectsFromLocalStorage();
+
+        // Function to add or update project
+        function addOrUpdateProject(projectData) {
+            var existingProjectIndex = projectsData.findIndex(function(project) {
+                return project.nama === projectData.nama;
+            });
+
+            if (existingProjectIndex !== -1) {
+                projectsData[existingProjectIndex] = projectData;
+            } else {
+                projectsData.push(projectData);
+            }
+
+            saveProjectsToLocalStorage();
+            renderProjectsTable();
+        }
+
+        // Function for project search
+        function searchProjects() {
+            var searchTerm = document.getElementById("searchInput").value.toLowerCase();
+
+            var filteredProjects = projectsData.filter(function(project) {
+                return (
+                    project['nama'].toLowerCase().includes(searchTerm) ||
+                    project['pic'].toLowerCase().includes(searchTerm) ||
+                    project['status'].toLowerCase().includes(searchTerm)
+                );
+            });
+
+            renderProjectsTable(filteredProjects);
+        }
+
+        // Function to render projects to table
+        function renderProjectsTable(projects = projectsData) { // Accept projects as parameter with default value
+            var tableBody = document.getElementById("projectTableBody");
+            tableBody.innerHTML = "";
+
+            projects.forEach(function(project) {
+                var projectTableRow = "<tr>";
+                projectTableRow += "<td>" + project['nama'] + "</td>";
+                projectTableRow += "<td>" + project['tujuan'] + "</td>";
+                projectTableRow += "<td>" + project['tanggalMulai'] + "</td>";
+                projectTableRow += "<td>" + project['tanggalSelesai'] + "</td>";
+                projectTableRow += "<td>" + project['pic'] + "</td>";
+                projectTableRow += "<td>" + project['status'] + "</td>";
+                projectTableRow += "<td>" + project['catatan'] + "</td>";
+                projectTableRow += "<td>" + project['waktuPerekaman'] + "</td>";
+                projectTableRow += "<td>" + project['waktuUpdateTerakhir'] + "</td>";
+
+                tableBody.innerHTML += projectTableRow;
+            });
+        }
+
+        // Function to show project data
+        function showProjectData() {
+            document.getElementById("projectTableContainer").style.display = "block";
+            document.getElementById("showProjectButton").style.display = "none";
+            document.getElementById("hideProjectButton").style.display = "inline-block";
+        }
+
+        // Function to hide project data
+        function hideProjectData() {
+            document.getElementById("projectTableContainer").style.display = "none";
+            document.getElementById("showProjectButton").style.display = "inline-block";
+            document.getElementById("hideProjectButton").style.display = "none";
+        }
+
+        // Event listener for form submission
+        document.getElementById("projectForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(this);
+
+            var projectData = {};
+            formData.forEach(function(value, key){
+                projectData[key] = value;
+            });
+
+            projectData['waktuPerekaman'] = new Date().toLocaleString();
+            projectData['waktuUpdateTerakhir'] = new Date().toLocaleString();
+
+            addOrUpdateProject(projectData);
+        });
+
+        // Call renderProjectsTable function on page load
+        renderProjectsTable();
+    </script>
+</body>
+</html>
